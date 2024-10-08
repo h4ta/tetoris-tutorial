@@ -87,9 +87,15 @@ export const Controller = (props: Props) => {
           nextField[nextCell[0]][nextCell[1]] = minoField;
         }
       }
-
-      setField(nextField);
+    } else {
+      // 出来なかったら、
+      // なくなっている箇所を戻す
+      moveField.forEach(([i, j, nowCell]) => {
+        nextField[i][j] = nowCell;
+      });
     }
+
+    setField(nextField);
 
     console.log(moveField);
   };
@@ -129,10 +135,14 @@ export const Controller = (props: Props) => {
           nextField[nextCell[0]][nextCell[1]] = minoField;
         }
       }
-
-      console.log(moveField);
-      setField(nextField);
+    } else {
+      // 出来なかったら、
+      // なくなっている箇所を戻す
+      moveField.forEach(([i, j, nowCell]) => {
+        nextField[i][j] = nowCell;
+      });
     }
+    setField(nextField);
   };
 
   const moveDown = async () => {
