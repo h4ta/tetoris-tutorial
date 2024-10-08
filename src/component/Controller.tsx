@@ -5,15 +5,13 @@ import { useBeginningField } from "../hooks/useBeginningField";
 type Props = {
   field: Array<Array<MinoCell>>;
   setField: Dispatch<SetStateAction<Array<Array<MinoCell>>>>;
-  setTestNum: Dispatch<SetStateAction<number>>;
+  setMinoCount: Dispatch<SetStateAction<number>>;
   isPlayingNow: boolean;
   setIsPlayingNow: Dispatch<SetStateAction<boolean>>;
   setDeleteRowNum: Dispatch<SetStateAction<number>>;
   isGameOver: boolean;
   setIsGameOver: Dispatch<SetStateAction<boolean>>;
   nextMino: Array<Array<MinoCell>>;
-  gameOverNum: number;
-  setGameOverNum: Dispatch<SetStateAction<number>>;
 };
 
 const space: MinoCell = {
@@ -38,15 +36,13 @@ export const Controller = (props: Props) => {
   const {
     field,
     setField,
-    setTestNum,
+    setMinoCount,
     isPlayingNow,
     setIsPlayingNow,
     setDeleteRowNum,
     isGameOver,
     setIsGameOver,
     nextMino,
-    gameOverNum,
-    setGameOverNum,
   } = props;
 
   const { beginningField } = useBeginningField();
@@ -195,7 +191,7 @@ export const Controller = (props: Props) => {
       await sleep(1000);
 
       if (checkCanPutNextMino(nextMino)) {
-        setTestNum((n) => n + 1);
+        setMinoCount((n) => n + 1);
       } else {
         setIsPlayingNow(false);
         setIsGameOver(true);
@@ -257,7 +253,7 @@ export const Controller = (props: Props) => {
     await sleep(1000);
 
     if (checkCanPutNextMino(nextMino)) {
-      setTestNum((n) => n + 1);
+      setMinoCount((n) => n + 1);
     } else {
       setIsPlayingNow(false);
       setIsGameOver(true);
@@ -474,7 +470,7 @@ export const Controller = (props: Props) => {
 
   const restart = () => {
     setField(beginningField);
-    setTestNum((n) => n + 1);
+    setMinoCount((n) => n + 1);
     setIsGameOver(false);
     setIsPlayingNow(true);
     startAutoFall();
@@ -506,7 +502,7 @@ export const Controller = (props: Props) => {
             {isGameOver ? (
               <button
                 onClick={() => {
-                  setGameOverNum((n) => n + 1);
+                  setIsGameOver(false);
                 }}
               >
                 restart

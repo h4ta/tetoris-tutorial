@@ -9,11 +9,10 @@ import { Guide } from "./component/Guide";
 import { useBeginningField } from "./hooks/useBeginningField";
 
 export default function App() {
-  const [testNum, setTestNum] = useState<number>(0);
+  const [minoCount, setMinoCount] = useState<number>(0);
   const [isPlayingNow, setIsPlayingNow] = useState<boolean>(false);
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
   const [deleteRowNum, setDeleteRowNum] = useState<number>(0);
-  const [gameOverNum, setGameOverNum] = useState<number>(0);
 
   const { beginningField } = useBeginningField();
   const [field, setField] = useState<Array<Array<MinoCell>>>(beginningField);
@@ -41,27 +40,28 @@ export default function App() {
 
   // ゲーム開始時の処理
   useEffect(() => {
-    setField(beginningField);
-    setIsGameOver(false);
-    setDeleteRowNum(0);
-    setTestNum((n) => n + 1);
-  }, [gameOverNum]);
+    if (!isGameOver) {
+      setField(beginningField);
+      setDeleteRowNum(0);
+      setMinoCount((n) => n + 1);
+    }
+  }, [isGameOver]);
 
   // ミノがランダムで発生しつつも、どのミノも一週に一度は発生するように
   useEffect(() => {
-    if (testNum === 7) {
-      setTestNum(0);
+    if (minoCount === 7) {
+      setMinoCount(0);
       return;
     }
-    setMino(appearMino(minoOrder.current[testNum]).form, 4, 0);
+    setMino(appearMino(minoOrder.current[minoCount]).form, 4, 0);
 
-    if (testNum < 6) {
-      setNextMinoForm(appearMino(minoOrder.current[testNum + 1]).form);
+    if (minoCount < 6) {
+      setNextMinoForm(appearMino(minoOrder.current[minoCount + 1]).form);
     } else {
       minoOrder.current = shuffleArray([...Array(7)].map((_, i) => i + 1));
       setNextMinoForm(appearMino(minoOrder.current[0]).form);
     }
-  }, [testNum]);
+  }, [minoCount]);
 
   // 受け取ったミノを表示させる。
   const setMino = (mino: Array<Array<MinoCell>>, x: number, y: number) => {
@@ -90,15 +90,13 @@ export default function App() {
         <Controller
           field={field}
           setField={setField}
-          setTestNum={setTestNum}
+          setMinoCount={setMinoCount}
           isPlayingNow={isPlayingNow}
           setIsPlayingNow={setIsPlayingNow}
           setDeleteRowNum={setDeleteRowNum}
           isGameOver={isGameOver}
           setIsGameOver={setIsGameOver}
           nextMino={nextMinoForm}
-          gameOverNum={gameOverNum}
-          setGameOverNum={setGameOverNum}
         />
       </div>
     </div>
