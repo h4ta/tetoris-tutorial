@@ -79,10 +79,10 @@ export const Controller = (props: Props) => {
       });
 
       // fieldを戻す処理
-      if (moveField.length === 12) {
+      if (moveField.length !== 16) {
         let nextCell;
         for (let i = 0; i < 4; i++) {
-          if (moveVec) {
+          if (moveVec > 0) {
             nextCell = moveField[3 * i];
           } else {
             nextCell = moveField[3 * i + 2];
